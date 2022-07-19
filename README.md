@@ -1,5 +1,3 @@
-# IoT23-network-traffic-anomalies-detection
-An oversampling method in MLFS for imbalace classification for network-traffic anomalies detection.
 # Detection and Classification of Network Traffic Anomalies
 
 Experiments are based on the light version of
@@ -117,7 +115,7 @@ Run content shuffling by running **run_step01_shuffle_file_content.py**
 > 3. [Prepare Data for ML](#3-prepare-data-for-ml,) by running **prepare_imbalnce_data.py**
 #### 4.2. Run designed experiments by running **auto_based_ovsample_svm.py** or **CNN_auto_based_ovsample_svm.py** 
 >
-> 1. When running **auto_based_ovsample_svm.py** or **CNN_auto_based_ovsample_svm.py** first time, the autoencoder is required to train by enabling autoencoder training at 38th rows in **auto_based_ovsample_svm.py** or 40th rows in **CNN_auto_based_ovsample_svm.py** .
+> 1. When runing **auto_based_ovsample_svm.py** or **CNN_auto_based_ovsample_svm.py** first time, the autoencoder is required to train by enabling autoencoder training at 38th rows in **auto_based_ovsample_svm.py** or 40th rows in **CNN_auto_based_ovsample_svm.py** .
 
 ---
 <a name="footnote-1">[1]</a>: “Stratosphere Laboratory. A labeled dataset with malicious and benign IoT network traffic. January 22th. Agustin
