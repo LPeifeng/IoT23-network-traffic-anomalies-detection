@@ -1,0 +1,5 @@
+iot23_scenarios_dir = '/media/liang/data4T/Onedrive/IoT-23/IoTScenarios/'
+iot23_attacks_dir = '/media/liang/data4T/Onedrive/IoT-23/2_attacks/'
+iot23_data_dir = '/media/liang/data4T/Onedrive/IoT-23/3_data/'
+iot23_experiments_dir = '/media/liang/data4T/Onedrive/IoT-23/4_experiments/'
+iot23_imbalance_data_dir = '/media/liang/data4T/Onedrive/IoT-23/3_data/imbalance_data/'
