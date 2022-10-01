@@ -47,7 +47,10 @@ class evaluation:
 			F_score=0
 		else:
 			Prec =TP / (TP+FP)
-			F_score = 2*Recall*Prec/(Recall+Prec)
+			if Recall+Prec==0:
+				F_score=0
+			else:
+				F_score = 2*Recall*Prec/(Recall+Prec)
 		TNR = TN/(TN+FP)
 		
 		G_mean = np.square(Recall*TNR)

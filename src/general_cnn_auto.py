@@ -1,14 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# @Author  : Liang, Peifeng ()
-# @Link    : ${link}
-# @Version : $Id$
-# Reference: autoEncoder:一维CNN自动编码, the website is following: https://download.csdn.net/download/weixin_42166105/16510702?ops_
-#   request_misc=%257B%2522request%255Fid%2522%253A%2522166461659716782414934672%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fall.%2522%257D&
-#   request_id=166461659716782414934672&biz_id=1&utm_medium=distribute.pc_search_result.none-task-download-2~all~first_rank_ecpm_v1~rank_v31_ecpm-1-16510702-null-null.
-#   142^v51^control,201^v3^control_1&utm_term=autoEncoder%3A%E4%B8%80%E7%BB%B4&spm=1018.2226.3001.4187.1
-
-
 import tensorflow as tf
 import tensorflow
 
@@ -53,20 +42,20 @@ def train(x_train):
     conv9 = Convolution1D(32,3,activation='relu',padding='same',strides=1)(pool4)
     conv10 = Convolution1D(16,3,activation='relu',padding='same',strides=1, name='cnn_last_layer')(conv9)
 
-    encode_layer2 = Dense(32, activation='relu', name="Dense_1")(conv10)
-    encode_layer3 = Dense(10, activation='relu',name="Dense_2")(encode_layer2)
-   
+    #encode_layer2 = Dense(32, activation='relu', name="Dense_1")(conv10)
+    #encode_layer3 = Dense(10, activatiupsmp1 = UpSampling1D(size=2)(conv11) on='relu',name="Dense_2")(encode_layer2)
+    #encode_layer2 = Dense(32, activation='relu', name="Dense_1")(conv10)
+    encode_layer3 = Dense(16, activation='relu',name="Dense_2")(conv10)
     encoder=Model(inputs=inpt, outputs=encode_layer3)
     encoder.summary()
 
-    input_decoder = Input(shape = (1, 10))
+    #input_decoder = Input(shape = (1, 16))
 
     #############
 
-
-#input_decoder = Input(shape = (1, 16)) ############# 
-    dencode_layer2 = Dense(32, activation='relu')(input_decoder)
-    conv11 = Convolution1D(16,3,activation='relu',padding='same',strides=1)(dencode_layer2)
+    input_decoder = Input(shape = (1, 16)) ############# 
+    #encode_layer2 = Dense(32, activation='relu', name="Dense_1")(input_decoder)
+    conv11 = Convolution1D(16,3,activation='relu',padding='same',strides=1)(input_decoder)
     conv12= Convolution1D(32,3,activation='relu',padding='same',strides=1)(conv11)    
     upsmp1 = UpSampling1D(size=2)(conv12) 
 
@@ -96,20 +85,6 @@ def train(x_train):
 
     conv21 = Convolution1D( 1, kernel_size = (3), activation='tanh', padding='same')(conv20) 
     decoder = Model(inputs=input_decoder, outputs=conv21)
-
-    '''
-    input_decoder = Input(shape = (1, 10)) ############# 
-    encode_layer2 = Dense(32, activation='relu', name="Dense_1")(input_decoder)
-    upsmp1 = UpSampling1D(size=2)(encode_layer2) 
-    conv11 = Convolution1D( 4, 3, activation='relu', padding='same')(upsmp1) 
-    upsmp1 = UpSampling1D(size=2)(conv11) 
-
-    conv11 = Convolution1D( 8, 3, activation='relu', padding='same')(upsmp1) 
-    conv12 = Convolution1D( 8, 3, activation='relu', padding='same')(conv11) 
-    pool4 = UpSampling1D(size=4)(conv12) 
-    conv10 = Convolution1D( 1, kernel_size = (3), activation='tanh', padding='same')(pool4) 
-    decoder = Model(inputs=input_decoder, outputs=conv10)
-    '''
     decoder.summary()
 
     autoencoder_outputs = decoder(encoder(inpt))
@@ -130,21 +105,77 @@ def train(x_train):
     print('.................Model Trained Succesfully.....................')
     return encoder,autoencoder
 
-def CNN_auto_train(x_train_data, output_model_dir):
+def g_CNN_auto_train(x_train_data, output_model_dir):
     print('.......................Training Data loading........................')
     #train_file_path='/media/liang/data4T/Onedrive/IoT-23/4_experiments/F14_S04_R_10_000//data//normal_10_000_clean.csv_train.csv'
     
     x_train=x_train_data.values
-    x_train = x_train.reshape((x_train.shape[0],x_train.shape[1],1)) # Output clean speech (Y_Train.shape[0],Y_Train.shape[1],1 to match dimension)
+    x_train = x_train.reshape((x_train.shape[0],x_train.shape[1],1)) 
 
 
     encoder, autoencoder = train(x_train=x_train)
 #%%
 #save model
     model_json = encoder.to_json()
-    output_model_path=output_model_dir+'CNN_model.json'
+    output_model_path=output_model_dir+'g_CNN_model.json'
     with open(output_model_path,"w") as json_file:
         json_file.write(model_json)
-    output_weights_path=output_model_dir+'CNN_model.h5'
+    output_weights_path=output_model_dir+'g_CNN_model.h5'
     encoder.save_weights(output_weights_path)
+    print(".............Saved model to disk successfully......")
+
+
+def softmax_train(x_train,y_train):
+
+    inpt = Input(shape=(16,))
+
+    FC_layer2 = Dense(64, activation='relu', name="FC_layer2")(inpt)
+    FC_layer3 = Dense(32, activation='relu',name="FC_layer3")(FC_layer2)
+    y=Dense(1,activation='softmax')(FC_layer3)
+       
+    FCnet=Model(inputs=inpt, outputs=y)
+    #FCnet.summary()
+
+
+    FCnet.compile(loss='binary_crossentropy',
+    optimizer='rmsprop')
+    #,    metrics=['accuracy'])
+
+    FCnet.fit(x_train, y_train,
+    epochs=20,
+    batch_size=128)
+
+    print('....................Softmax Model Created Sucessfully...................')
+    print(FCnet.summary())
+    #
+    print('........................Softmax  Model Compiling.........................')
+    FCnet.compile(loss='binary_crossentropy',
+    optimizer='rmsprop',
+    metrics=['accuracy'])
+    print('.................Softmax Model Compiled Successfully....................')
+    #
+    #
+    #devices = tf.config.experimental.list_physical_devices('GPU')
+    print('........................Softmax Model Training.........................')
+    FCnet.fit(x_train, y_train,
+        epochs=20,
+        batch_size=128)
+    print('.................Model Trained Succesfully.....................')
+    return FCnet
+
+def softmax_classifier_train(x_train, y_train, output_model_dir):
+    print('.......................Training Data loading........................')
+       
+    #x_train=x_train_data.values
+    #x_train = x_train.reshape((x_train.shape[0],x_train.shape[1],1)) 
+
+    FCnet= softmax_train(x_train=x_train,y_train=y_train)
+#%%
+#save model
+    model_json = FCnet.to_json()
+    output_model_path=output_model_dir+'sf_model.json'
+    with open(output_model_path,"w") as json_file:
+        json_file.write(model_json)
+    output_weights_path=output_model_dir+'sf_model.h5'
+    FCnet.save_weights(output_weights_path)
     print(".............Saved model to disk successfully......")
