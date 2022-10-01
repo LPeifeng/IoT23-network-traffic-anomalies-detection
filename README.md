@@ -115,8 +115,9 @@ Run content shuffling by running **run_step01_shuffle_file_content.py**
 > 3. [Prepare Data for ML](#3-prepare-data-for-ml,) by running **prepare_imbalnce_data.py**
 #### 4.2. Run designed experiments by running **auto_based_ovsample_svm.py** or **CNN_auto_based_ovsample_svm.py** 
 >
-> 1. When runing **auto_based_ovsample_svm.py** or **CNN_auto_based_ovsample_svm.py** first time, the autoencoder is required to train by enabling autoencoder training at 38th rows in **auto_based_ovsample_svm.py** or 40th rows in **CNN_auto_based_ovsample_svm.py** .
+> 1. When running **auto_based_ovsample_svm.py** or **CNN_auto_based_ovsample_svm.py** first time, the autoencoder is required to train by enabling autoencoder training at 38th rows in **auto_based_ovsample_svm.py** or 40th rows in **CNN_auto_based_ovsample_svm.py** .
 
 ---
 <a name="footnote-1">[1]</a>: “Stratosphere Laboratory. A labeled dataset with malicious and benign IoT network traffic. January 22th. Agustin
 Parmisano, Sebastian Garcia, Maria Jose Erquiaga. Online: https://www.stratosphereips.org/datasets-iot23
+<a name="footnote-1">[2]</a>: autoEncoder:一维CNN自动编码, https://download.csdn.net/download/weixin_42166105/16510702?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522166461659716782414934672%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fall.%2522%257D&request_id=166461659716782414934672&biz_id=1&utm_medium=distribute.pc_search_result.none-task-download-2~all~first_rank_ecpm_v1~rank_v31_ecpm-1-16510702-null-null.142^v51^control,201^v3^control_1&utm_term=autoEncoder%3A%E4%B8%80%E7%BB%B4&spm=1018.2226.3001.4187.1
